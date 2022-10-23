@@ -9,6 +9,8 @@ import { PageContent } from "@/components/layouts/page-content";
 import ContainerLayout from "@/components/layouts/container";
 import { SunIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import Rating from "react-rating";
+import { RatingStar } from "@/components/icons/rating-star";
 
 import { TagLabel } from "@/components/ui/tag-label";
 
@@ -57,6 +59,25 @@ export default function Home({ books }) {
                         <span className="font-medium">
                           {book.fields.author}
                         </span>
+                      </div>
+                      <div>
+                        <div class="flex items-center">
+                          {[...Array(book.fields.rating)].map((star) => (
+                            <RatingStar
+                              className={"w-5 h-5 text-yellow-400"}
+                              key={`${book.fields.title}`}
+                            />
+                          ))}
+                          {[...Array(5 - book.fields.rating)].map((star) => (
+                            <RatingStar
+                              className={"w-5 h-5 text-gray-300"}
+                              key={`${book.fields.title}`}
+                            />
+                          ))}
+                          <p class="ml-2 text-sm font-bold">
+                            {book.fields.rating} of 5
+                          </p>
+                        </div>
                       </div>
 
                       <div className="flex">
