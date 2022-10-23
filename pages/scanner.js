@@ -29,19 +29,23 @@ export default function Scan({ books }) {
   const [identified, setIndentified] = useState(false);
   const [bookData, setBookData] = useState({});
   const [open, setOpen] = useState(false);
+  const [windowSize, setWindowSize] = useState({
+    width: undefined,
+    height: undefined,
+  });
   const router = useRouter();
 
   const scaningBook = useCallback(
     (data) => {
       if (data) {
-        console.log(books);
+        // console.log(books);
         const book = books.find((i) => {
           return i.fields.isbn === data.codeResult.code;
         });
         if (book != undefined) {
           setData(book.fields.title);
           setIndentified(true);
-          setStopStream(true);
+          // setStopStream(true);
           setBookData(book);
           setOpen(true);
           // router.push(`/book/${book.fields.slug}`);
@@ -60,9 +64,15 @@ export default function Scan({ books }) {
 
   // console.log(bookData);
 
-  // useEffect(() => {
-  //   setOpen(true);
-  // }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // detect window screen width function
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+  }, []);
 
   function onDismiss() {
     setOpen(false);
@@ -78,9 +88,8 @@ export default function Scan({ books }) {
           <div className="p-5 py-6 mb-10 w-full min-h-screen space-y-6">
             <SecondaryBackLink path={"/"}>Kembali</SecondaryBackLink>
             <div className="space-y-6">
-              <div className="rounded-2xl h-[27rem] bg-slate-100 overflow-hidden relative">
+              <div className="rounded-2xl h-full bg-slate-100 overflow-hidden relative">
                 <BarcodeScanner onDetected={scaningBook} stop={stopStream} />
-                {/* <div id="camera"></div> */}
                 <div
                   className={clsx(
                     identified ? "bg-jala-insight" : "bg-red-300",
@@ -97,7 +106,8 @@ export default function Scan({ books }) {
                 open={open}
                 onDismiss={onDismiss}
                 ref={sheetRef}
-                snapPoints={() => 500}
+                snapPoints={() => windowSize.height * 0.8}
+                className=""
               >
                 <div
                   className={clsx(
@@ -153,7 +163,7 @@ export default function Scan({ books }) {
                       <div className="flex justify-center">
                         <TagLabel
                           className={clsx(
-                            status == "Booked"
+                            bookData.fields.status == "Booked"
                               ? "bg-red-400/50 text-white"
                               : "bg-green-400/70 text-white",
                             "text-sm"
@@ -182,7 +192,7 @@ export default function Scan({ books }) {
                     <div className="space-y-2">
                       <div className="space-y-2">
                         <h2 className="text-lg font-medium">Deskripsi Buku</h2>
-                        <p className="text-gray-600 text-md line-clamp-6">
+                        <p className="text-gray-600 text-sm font-light line-clamp-6">
                           {bookData.fields.synopsis}
                         </p>
                       </div>
