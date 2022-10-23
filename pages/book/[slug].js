@@ -13,7 +13,7 @@ import clsx from "clsx";
 import * as dayjs from "dayjs";
 // import { Dayjs } from "dayjs";
 
-export default function BooksDetail({ book }) {
+export default function BooksDetail({ book, bookRecords }) {
   const {
     title,
     pages,
@@ -27,7 +27,29 @@ export default function BooksDetail({ book }) {
     status,
     synopsis,
   } = book;
-  console.log(image);
+  // console.log(image);
+  console.log("book", book);
+  console.log("records", bookRecords);
+
+  const postKembali = () => {
+    axios({
+      method: "post",
+      url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/kembali`,
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        fields: {
+          name: bookRecords.fields.name,
+          department: bookRecords.fields.department,
+          pinjam: [bookRecords.id],
+          tanggal_kembali: dayjs().format("YYYY-MM-DD"),
+          books: [bookRecords.fields.books[0]],
+        },
+      }),
+    });
+  };
   return (
     <PageLayout>
       <NextSeo title={`Scan Buku | Pinjam Buku JALA`} />
@@ -56,7 +78,7 @@ export default function BooksDetail({ book }) {
                 <div className="text-sm font-light">
                   by <span className="font-medium">{author}</span>
                 </div>
-                <div class="flex justify-center items-center">
+                <div className="flex justify-center items-center">
                   {[...Array(rating)].map((star, i) => (
                     <RatingStar
                       className={"w-5 h-5 text-yellow-400"}
@@ -105,10 +127,37 @@ export default function BooksDetail({ book }) {
                   </p>
                 </div>
               </div>
+              <div className="space-y-2">
+                {status == "Available" ? (
+                  <h2 className="text-lg font-medium">Pinjam Buku</h2>
+                ) : (
+                  <div className="space-y-2">
+                    <h2 className="text-lg font-medium">Kembalikan Buku</h2>
+                    <button onClick={postKembali}>Kembalikan Buku</button>
+                    {/* <form onSubmit={handleSubmit(onSubmit)}>
+                            <input
+                              defaultValue="test"
+                              {...register("example")}
+                            />
+
+                            <input
+                              {...register("exampleRequired", {
+                                required: true,
+                              })}
+                            />
+                            {errors.exampleRequired && (
+                              <span>This field is required</span>
+                            )}
+
+                            <input type="submit" />
+                          </form> */}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="fixed z-90 bottom-5 inset-x-0  w-full">
+          {/* <div className="fixed z-90 bottom-5 inset-x-0  w-full">
             {status == "Available" ? (
               <Link href={"/scanner"}>
                 <div className="bg-jala-primary px-8 py-4 w-2/3 md:w-1/3 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter hover:bg-jala-insight hover:drop-shadow-2xl hover:animate-bounce duration-300">
@@ -120,14 +169,7 @@ export default function BooksDetail({ book }) {
                 Buku Dipinjam
               </div>
             )}
-          </div>
-
-          {/* <button
-            onClick={() => setTorchOn(!torchOn)}
-            className="rounded-full py-3 px-5 border-2 "
-          >
-            Switch Torch {torchOn ? "Off" : "On"}
-          </button> */}
+          </div> */}
         </ContainerLayout>
       </PageContent>
     </PageLayout>
@@ -144,9 +186,20 @@ export const getStaticProps = async ({ params: { slug } }) => {
     url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/books?filterByFormula=slug=%22${slug}%22`,
   });
 
+  const { data: bookRecords } = await axios({
+    method: "get",
+    url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/pinjam/${book.records[0].fields.borrower[0]}`,
+    // url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/books?filterByFormula=slug=%22${slug}%22`,
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+  });
+
   return {
     props: {
       book: book.records[0].fields,
+      bookRecords: bookRecords,
       // story,
       // farmer,
       // farm,

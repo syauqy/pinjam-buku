@@ -12,6 +12,7 @@ import clsx from "clsx";
 import dynamic from "next/dynamic";
 import { RatingStar } from "@/components/icons/rating-star";
 import * as dayjs from "dayjs";
+import { useForm } from "react-hook-form";
 
 import { TagLabel } from "@/components/ui/tag-label";
 
@@ -35,10 +36,38 @@ export default function Scan({ books }) {
   });
   const router = useRouter();
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+    axios({
+      method: "post",
+      url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/kembali`,
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      data: {
+        records: {
+          fields: [
+            {
+              firstName: "Fred",
+              lastName: "Flintstone",
+            },
+          ],
+        },
+      },
+    });
+  };
+
   const scaningBook = useCallback(
     (data) => {
       if (data) {
-        // console.log(books);
+        console.log(books);
         const book = books.find((i) => {
           return i.fields.isbn === data.codeResult.code;
         });
@@ -55,14 +84,10 @@ export default function Scan({ books }) {
           );
           setIndentified(false);
         }
-        // setData(result.text);
-        // console.log(result.text);
       }
     },
     [books]
   );
-
-  // console.log(bookData);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -106,7 +131,7 @@ export default function Scan({ books }) {
                 open={open}
                 onDismiss={onDismiss}
                 ref={sheetRef}
-                snapPoints={() => windowSize.height * 0.8}
+                snapPoints={() => windowSize.height * 0.9}
                 className=""
               >
                 <div
@@ -126,13 +151,13 @@ export default function Scan({ books }) {
                         <Image
                           src={bookData.fields.image[0].url}
                           alt={bookData.fields.image[0].filename}
-                          height={300}
-                          width={200}
+                          height={150}
+                          width={100}
                         />
                       </div>
                     </div>
                     <div className="space-y-2 text-center">
-                      <h1 className="text-3xl font-bold">
+                      <h1 className="text-2xl font-bold">
                         {bookData.fields.title}
                       </h1>
                       <div className="text-sm font-light">
@@ -196,6 +221,37 @@ export default function Scan({ books }) {
                           {bookData.fields.synopsis}
                         </p>
                       </div>
+                    </div>
+                    <div className="space-y-2">
+                      {bookData.fields.status == "Available" ? (
+                        <h2 className="text-lg font-medium">Pinjam Buku</h2>
+                      ) : (
+                        <div className="space-y-2">
+                          <h2 className="text-lg font-medium">
+                            Kembalikan Buku
+                          </h2>
+                          <form onSubmit={handleSubmit(onSubmit)}>
+                            {/* register your input into the hook by invoking the "register" function */}
+                            <input
+                              defaultValue="test"
+                              {...register("example")}
+                            />
+
+                            {/* include validation with required or other standard HTML validation rules */}
+                            <input
+                              {...register("exampleRequired", {
+                                required: true,
+                              })}
+                            />
+                            {/* errors will return when field validation fails  */}
+                            {errors.exampleRequired && (
+                              <span>This field is required</span>
+                            )}
+
+                            <input type="submit" />
+                          </form>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

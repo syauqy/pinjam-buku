@@ -19,6 +19,7 @@
     "next-seo": "^5.8.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.38.0",
     "react-qrcode-logo": "^2.8.0",
     "react-rating": "^2.0.5",
     "react-spring-bottom-sheet": "3.5.0-alpha.0"
