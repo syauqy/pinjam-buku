@@ -19,15 +19,10 @@ export const TagLabel = React.forwardRef(
   ) => (
     <div
       className={clsx(
-        "bg-jala-insight-button px-4 py-2 rounded-full",
+        " px-4 py-1 rounded-full",
         className,
         bgColor,
-        hoverColor,
-        variant == "primary" ? "bg-jala-insight-button text-jala-insight" : "",
-        variant == "insight" ? "bg-jala-insight-button text-jala-insight" : "",
-        variant == "trade" ? "bg-jala-trade-button text-jala-trade" : "",
-        variant == "farm" ? "bg-jala-farm-button text-jala-farm" : "",
-        variant == "impact" ? "bg-jala-impact-button text-jala-impact" : ""
+        hoverColor
       )}
       {...rest}
     >

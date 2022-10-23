@@ -1,5 +1,6 @@
-import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 import { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { PageLayout } from "@/components/layouts/page";
@@ -8,7 +9,8 @@ import { PageContent } from "@/components/layouts/page-content";
 import ContainerLayout from "@/components/layouts/container";
 import { SunIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import Image from "next/image";
+
+import { TagLabel } from "@/components/ui/tag-label";
 
 export default function Home({ books }) {
   const router = useRouter();
@@ -56,7 +58,19 @@ export default function Home({ books }) {
                           {book.fields.author}
                         </span>
                       </div>
-                      <div className="text-sm">{book.fields.status}</div>
+
+                      <div className="flex">
+                        <TagLabel
+                          className={clsx(
+                            book.fields.status == "Booked"
+                              ? "bg-red-400/50 text-white"
+                              : "bg-green-400/70 text-white",
+                            "text-sm"
+                          )}
+                        >
+                          {book.fields.status}
+                        </TagLabel>
+                      </div>
                     </div>
                   </div>
                 ))}
