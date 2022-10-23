@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ericblade/quagga2": "^1.7.6",
     "@heroicons/react": "^2.0.12",
     "@steima/react-qr-barcode-scanner": "^1.1.2",
     "axios": "^1.1.3",
