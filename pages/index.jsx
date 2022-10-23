@@ -24,9 +24,9 @@ export default function Home({ books }) {
       <NextSeo title={`Scan Buku | Pinjam Buku JALA`} />
       <PageContent>
         <ContainerLayout className="sm:max-w-xl space-y-2 h-screen ">
-          <div className="p-5 py-6 mt-10 w-full min-h-screen">
+          <div className="p-5 py-6 mt-5 mb-10 w-full min-h-screen">
             <div className="space-y-4 text-gray-700">
-              <div className="space-y-3">
+              <div className="space-y-6">
                 <h1 className="font-inter text-4xl font-black">Pinjam Buku</h1>
                 <p className="font-light text-sm">
                   Mau pinjam buku untuk dibaca di rumah? Temukan buku buku
@@ -47,7 +47,7 @@ export default function Home({ books }) {
                         alt={book.fields.image[0].filename}
                         height={150}
                         width={100}
-                        className="rounded-lg bg-slate-200 shadow-2xl"
+                        className=" bg-slate-200 shadow-2xl"
                       />
                     </div>
                     <div className="space-y-2">
@@ -62,16 +62,16 @@ export default function Home({ books }) {
                       </div>
                       <div>
                         <div class="flex items-center">
-                          {[...Array(book.fields.rating)].map((star) => (
+                          {[...Array(book.fields.rating)].map((star, i) => (
                             <RatingStar
                               className={"w-5 h-5 text-yellow-400"}
-                              key={`${book.fields.title}`}
+                              key={`${i}`}
                             />
                           ))}
-                          {[...Array(5 - book.fields.rating)].map((star) => (
+                          {[...Array(5 - book.fields.rating)].map((star, i) => (
                             <RatingStar
                               className={"w-5 h-5 text-gray-300"}
-                              key={`${book.fields.title}`}
+                              key={`${i}`}
                             />
                           ))}
                           <p class="ml-2 text-sm font-bold">
@@ -95,6 +95,14 @@ export default function Home({ books }) {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              <div className="fixed z-90 bottom-5 inset-x-0  w-full">
+                <Link href={"/scan"}>
+                  <div className="bg-jala-primary px-8 py-4 w-1/2 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter hover:bg-jala-insight hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                    Pinjam Buku
+                  </div>
+                </Link>
               </div>
 
               <div className="flex justify-center items-center">
