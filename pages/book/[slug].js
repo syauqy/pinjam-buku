@@ -28,10 +28,30 @@ export default function BooksDetail({ book, bookRecords }) {
     synopsis,
   } = book;
   // console.log(image);
-  console.log("book", book);
+  // console.log("book", book);
   console.log("records", bookRecords);
 
   const postKembali = () => {
+    axios({
+      method: "post",
+      url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/kembali`,
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        fields: {
+          name: bookRecords.fields.name,
+          department: bookRecords.fields.department,
+          pinjam: [bookRecords.id],
+          tanggal_kembali: dayjs().format("YYYY-MM-DD"),
+          books: [bookRecords.fields.books[0]],
+        },
+      }),
+    });
+  };
+
+  const postPinjam = () => {
     axios({
       method: "post",
       url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/kembali`,
@@ -58,7 +78,7 @@ export default function BooksDetail({ book, bookRecords }) {
           {/* <h1></h1> */}
 
           <div className="p-5 py-6 mb-10 w-full min-h-screen space-y-6">
-            <SecondaryBackLink path={"/scanner"}>Kembali</SecondaryBackLink>
+            <SecondaryBackLink path={"/"}>Kembali</SecondaryBackLink>
             <div className="space-y-6 text-gray-700">
               <div
                 className="flex justify-center items-center bg-cover bg-no-repeat bg-center"
@@ -188,7 +208,9 @@ export const getStaticProps = async ({ params: { slug } }) => {
 
   const { data: bookRecords } = await axios({
     method: "get",
-    url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/pinjam/${book.records[0].fields.borrower[0]}`,
+    url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/pinjam/${
+      book.records[0].fields.borrower ? book.records[0].fields.borrower[0] : ""
+    }`,
     // url: `${process.env.NEXT_PUBLIC_AIRTABLE_URI}/books?filterByFormula=slug=%22${slug}%22`,
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_AIRTABLE_TOKEN}`,
@@ -200,11 +222,6 @@ export const getStaticProps = async ({ params: { slug } }) => {
     props: {
       book: book.records[0].fields,
       bookRecords: bookRecords,
-      // story,
-      // farmer,
-      // farm,
-      // supplier,
-      // recipes,
     },
     revalidate: 30,
   };
