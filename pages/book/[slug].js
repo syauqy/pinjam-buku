@@ -36,7 +36,7 @@ export default function BooksDetail({ book }) {
           {/* <h1></h1> */}
 
           <div className="p-5 py-6 mb-10 w-full min-h-screen space-y-6">
-            <SecondaryBackLink path={"/"}>Kembali</SecondaryBackLink>
+            <SecondaryBackLink path={"/scanner"}>Kembali</SecondaryBackLink>
             <div className="space-y-6 text-gray-700">
               <div
                 className="flex justify-center items-center bg-cover bg-no-repeat bg-center"
@@ -69,7 +69,7 @@ export default function BooksDetail({ book }) {
                       key={`${i}`}
                     />
                   ))}
-                  <p class="ml-2 text-sm font-bold">{rating} of 5</p>
+                  <p className="ml-2 text-sm font-bold">{rating} of 5</p>
                 </div>
                 <div className="flex justify-center">
                   <TagLabel
@@ -86,14 +86,14 @@ export default function BooksDetail({ book }) {
 
                 <div className="flex flex-wrap items-center text-xs justify-center text-center font-light">
                   <p className="">{pages} halaman</p>
-                  <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                  <span className="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                   <p className="">
                     Diterbitkan {dayjs(published_date).format("D MMM YYYY")}
                   </p>
 
-                  <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                  <span className="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                   <p className="">{language}</p>
-                  <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                  <span className="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                   <p>ISBN {isbn}</p>
                 </div>
               </div>
@@ -109,8 +109,8 @@ export default function BooksDetail({ book }) {
           </div>
 
           <div className="fixed z-90 bottom-5 inset-x-0  w-full">
-            {status == "available" ? (
-              <Link href={"/scan"}>
+            {status == "Available" ? (
+              <Link href={"/scanner"}>
                 <div className="bg-jala-primary px-8 py-4 w-2/3 md:w-1/3 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter hover:bg-jala-insight hover:drop-shadow-2xl hover:animate-bounce duration-300">
                   Pinjam Buku
                 </div>

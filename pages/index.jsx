@@ -43,13 +43,15 @@ export default function Home({ books }) {
                     onClick={() => router.push(`/book/${book.fields.slug}`)}
                   >
                     <div className="shrink-0 ">
-                      <Image
-                        src={book.fields.image[0].url}
-                        alt={book.fields.image[0].filename}
-                        height={150}
-                        width={100}
-                        className=" bg-slate-200 shadow-2xl"
-                      />
+                      {book.fields.image && (
+                        <Image
+                          src={book.fields.image[0].url}
+                          alt={book.fields.image[0].filename}
+                          height={150}
+                          width={100}
+                          className=" bg-slate-200 shadow-2xl"
+                        />
+                      )}
                     </div>
                     <div className="space-y-2">
                       <div className="text-lg font-inter font-medium">
@@ -92,23 +94,24 @@ export default function Home({ books }) {
                           {book.fields.status}
                         </TagLabel>
                       </div>
-                      {book.fields.estimasi_kembali && (
-                        <div className="text-sm font-light">
-                          Estimasi dikembalikan pada
-                          <span className="font-medium ml-1">
-                            {dayjs(book.fields.estimasi_kembali[0]).format(
-                              "D MMM YYYY"
-                            )}
-                          </span>
-                        </div>
-                      )}
+                      {book.fields.status == "Booked" &&
+                        book.fields.estimasi_kembali && (
+                          <div className="text-sm font-light">
+                            Estimasi dikembalikan pada
+                            <span className="font-medium ml-1">
+                              {dayjs(book.fields.estimasi_kembali[0]).format(
+                                "D MMM YYYY"
+                              )}
+                            </span>
+                          </div>
+                        )}
                     </div>
                   </div>
                 ))}
               </div>
 
               <div className="fixed z-90 bottom-5 inset-x-0  w-full">
-                <Link href={"/scan"}>
+                <Link href={"/scanner"}>
                   <div className="bg-jala-primary px-8 py-4 w-1/2 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter hover:bg-jala-insight hover:drop-shadow-2xl hover:animate-bounce duration-300">
                     Pinjam Buku
                   </div>
