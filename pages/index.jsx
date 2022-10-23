@@ -9,6 +9,7 @@ import { PageContent } from "@/components/layouts/page-content";
 import ContainerLayout from "@/components/layouts/container";
 import { SunIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import * as dayjs from "dayjs";
 import Rating from "react-rating";
 import { RatingStar } from "@/components/icons/rating-star";
 
@@ -61,7 +62,7 @@ export default function Home({ books }) {
                         </span>
                       </div>
                       <div>
-                        <div class="flex items-center">
+                        <div className="flex items-center">
                           {[...Array(book.fields.rating)].map((star, i) => (
                             <RatingStar
                               className={"w-5 h-5 text-yellow-400"}
@@ -74,12 +75,11 @@ export default function Home({ books }) {
                               key={`${i}`}
                             />
                           ))}
-                          <p class="ml-2 text-sm font-bold">
+                          <p className="ml-2 text-sm font-bold">
                             {book.fields.rating} of 5
                           </p>
                         </div>
                       </div>
-
                       <div className="flex">
                         <TagLabel
                           className={clsx(
@@ -92,6 +92,16 @@ export default function Home({ books }) {
                           {book.fields.status}
                         </TagLabel>
                       </div>
+                      {book.fields.estimasi_kembali && (
+                        <div className="text-sm font-light">
+                          Estimasi dikembalikan pada
+                          <span className="font-medium ml-1">
+                            {dayjs(book.fields.estimasi_kembali[0]).format(
+                              "D MMM YYYY"
+                            )}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -104,78 +114,6 @@ export default function Home({ books }) {
                   </div>
                 </Link>
               </div>
-
-              <div className="flex justify-center items-center">
-                {/* <Image
-                  src={image[0].url}
-                  alt={image[0].filename}
-                  height={image[0].height / 2}
-                  width={image[0].width / 2}
-                  className="rounded-lg bg-slate-200 shadow-2xl"
-                /> */}
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold"></h1>
-                <p className="text-gray-600 text-md line-clamp-6"></p>
-              </div>
-              {/* <div className="space-y-2">
-                <h1 className="text-xl font-medium">Buat Story Baru</h1>
-                <div className="flex items-center space-x-2 text-sm md:text-base">
-                  <p>Untuk tambah story baru, pilih</p>
-                  <a
-                    href="https://airtable.com/shrhjnfCooJWsbBUD"
-                    rel="noreferrer"
-                    target="_blank"
-                    className="flex items-center text-jala-trade font-medium"
-                  >
-                    Story Baru
-                  </a>
-                </div>
-                <div className="flex items-center space-x-2 text-sm md:text-base">
-                  <p>Untuk tambah petambak baru, pilih</p>
-                  <a
-                    href="https://airtable.com/shrxxeGrt4qyRTHQ2"
-                    rel="noreferrer"
-                    target="_blank"
-                    className="flex items-center text-jala-trade font-medium"
-                  >
-                    Petambak Baru
-                  </a>
-                </div>
-                <div className="flex items-center space-x-2 text-sm md:text-base">
-                  <p>Untuk tambah tambak baru, pilih</p>
-                  <a
-                    href="https://airtable.com/shrjCLtKiJT3rIZrT"
-                    rel="noreferrer"
-                    target="_blank"
-                    className="flex items-center text-jala-trade font-medium"
-                  >
-                    Tambak Baru
-                  </a>
-                </div>
-                <div className="flex items-center space-x-2 text-sm md:text-base">
-                  <p>Untuk tambah supplier baru, pilih</p>
-                  <a
-                    href="https://airtable.com/shr2QU7045HSzfLR6"
-                    rel="noreferrer"
-                    target="_blank"
-                    className="flex items-center text-jala-trade font-medium"
-                  >
-                    Supplier Baru
-                  </a>
-                </div>
-                <div className="flex items-center space-x-2 text-sm md:text-base">
-                  <p>Untuk tambah resep udang baru, pilih</p>
-                  <a
-                    href="https://airtable.com/shrjyYWHM3QcftHII"
-                    rel="noreferrer"
-                    target="_blank"
-                    className="flex items-center text-jala-trade font-medium"
-                  >
-                    Resep Baru
-                  </a>
-                </div>
-              </div> */}
             </div>
           </div>
         </ContainerLayout>

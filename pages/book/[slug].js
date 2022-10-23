@@ -1,4 +1,5 @@
 import axios from "axios";
+import Link from "next/link";
 import { PageLayout } from "@/components/layouts/page";
 import { NextSeo } from "next-seo";
 import { PageContent } from "@/components/layouts/page-content";
@@ -105,6 +106,20 @@ export default function BooksDetail({ book }) {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="fixed z-90 bottom-5 inset-x-0  w-full">
+            {status == "available" ? (
+              <Link href={"/scan"}>
+                <div className="bg-jala-primary px-8 py-4 w-2/3 md:w-1/3 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter hover:bg-jala-insight hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                  Pinjam Buku
+                </div>
+              </Link>
+            ) : (
+              <div className="bg-red-400 px-8 py-4 w-2/3 md:w-1/3 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter  cursor-not-allowed">
+                Buku Dipinjam
+              </div>
+            )}
           </div>
 
           {/* <button
