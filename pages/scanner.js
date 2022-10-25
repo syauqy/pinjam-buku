@@ -112,6 +112,10 @@ export default function Scan({ books }) {
         <ContainerLayout className="sm:max-w-xl space-y-2 h-screen ">
           <div className="p-5 py-6 mb-10 w-full min-h-screen space-y-6">
             <SecondaryBackLink path={"/"}>Kembali</SecondaryBackLink>
+            <div class="space-y-6">
+              <h1 class="font-inter text-4xl font-black">Pindai Buku</h1>
+              <p class="font-light text-sm">Pastikan barcode buku terlihat jelas tepat di depan kameramu.</p>
+            </div>
             <div className="space-y-6">
               <div className="rounded-2xl h-full bg-slate-100 overflow-hidden relative">
                 <BarcodeScanner onDetected={scaningBook} stop={stopStream} />
