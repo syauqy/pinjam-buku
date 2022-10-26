@@ -18,7 +18,7 @@ import { TagLabel } from "@/components/ui/tag-label";
 export default function Home({ books }) {
   const router = useRouter();
 
-  console.log(books);
+  // console.log(books);
 
   return (
     <PageLayout>
@@ -38,9 +38,17 @@ export default function Home({ books }) {
                 <h2 className="font-inter text-xl font-medium">Daftar Buku</h2>
                 {books.map((book) => (
                   <div
-                    className="border shadow-sm px-6 py-4 flex flex-row gap-4 rounded-2xl cursor-pointer"
+                    className={clsx(
+                      book.fields.status == "Booked"
+                        ? "opacity-40"
+                        : "cursor-pointer",
+                      "border shadow-sm px-6 py-4 flex flex-row gap-4 rounded-2xl"
+                    )}
                     key={book.id}
-                    onClick={() => router.push(`/book/${book.fields.slug}`)}
+                    onClick={() => {
+                      if (book.fields.status == "Available")
+                        router.push(`/book/${book.fields.slug}`);
+                    }}
                   >
                     <div className="shrink-0 ">
                       {book.fields.image && (
@@ -54,10 +62,10 @@ export default function Home({ books }) {
                       )}
                     </div>
                     <div className="space-y-2">
-                      <div className="text-lg font-inter font-medium">
+                      <div className="text-sm sm:text-lg font-inter font-medium">
                         {book.fields.title}
                       </div>
-                      <div className="text-sm font-light">
+                      <div className="text-xs sm:text-sm font-light">
                         by{" "}
                         <span className="font-medium">
                           {book.fields.author}
@@ -77,8 +85,8 @@ export default function Home({ books }) {
                               key={`${i}`}
                             />
                           ))}
-                          <p className="ml-2 text-sm font-bold">
-                            {book.fields.rating} of 5
+                          <p className="ml-2 text-xs sm:text-sm font-bold">
+                            {book.fields.rating}
                           </p>
                         </div>
                       </div>
@@ -88,7 +96,7 @@ export default function Home({ books }) {
                             book.fields.status == "Booked"
                               ? "bg-red-400/50 text-white"
                               : "bg-green-400/70 text-white",
-                            "text-sm"
+                            "text-xs sm:text-sm"
                           )}
                         >
                           {book.fields.status}
@@ -96,7 +104,7 @@ export default function Home({ books }) {
                       </div>
                       {book.fields.status == "Booked" &&
                         book.fields.estimasi_kembali && (
-                          <div className="text-sm font-light">
+                          <div className="text-xs sm:text-sm font-light">
                             Estimasi dikembalikan pada
                             <span className="font-medium ml-1">
                               {dayjs(book.fields.estimasi_kembali[0]).format(
@@ -112,7 +120,7 @@ export default function Home({ books }) {
 
               <div className="fixed z-90 bottom-5 inset-x-0  w-full">
                 <Link href={"/scanner"}>
-                  <div className="bg-jala-primary px-8 py-4 w-1/2 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter hover:bg-jala-insight hover:drop-shadow-2xl hover:animate-bounce duration-300">
+                  <div className="bg-jala-primary px-8 py-4 w-2/3 sm:w1/2 mx-auto rounded-full drop-shadow-lg flex justify-center items-center text-white text-lg font-inter hover:bg-jala-insight hover:drop-shadow-2xl hover:animate-bounce duration-300">
                     Pinjam Buku
                   </div>
                 </Link>
